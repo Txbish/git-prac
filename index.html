@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dinner Flex: Roast Mode</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+        text-align: center;
+        padding: 3rem;
+        color: #2c3e50;
+        overflow-x: hidden;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+      }
+
+      .friend-dinner {
+        font-size: 1.6rem;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        color: #c0392b;
+      }
+
+      button {
+        background-color: #2ecc71;
+        color: white;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s, background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #27ae60;
+        transform: scale(1.05);
+      }
+
+      .feast {
+        display: none;
+        margin-top: 2rem;
+        font-size: 1.2rem;
+        text-align: left;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        animation: slideUp 1s ease-out forwards;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .feast h2 {
+        text-align: center;
+        color: #8e44ad;
+      }
+
+      .feast .roast {
+        text-align: center;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        color: #e74c3c;
+        font-weight: bold;
+      }
+
+      .feast ul {
+        list-style-type: "🔥 ";
+        padding-left: 1rem;
+        font-size: 1.1rem;
+      }
+
+      canvas {
+        position: fixed;
+        pointer-events: none;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>What did you eat today?</h1>
+    <div class="friend-dinner">
+      You had: <strong>Aloo Anday 🥔🥚</strong><br />
+      That’s cute 😏
+    </div>
+    <button onclick="revealFeast()">Click to see what I devoured 👑</button>
+
+    <div class="feast" id="feast">
+      <h2>MEGA FEAST UNLOCKED</h2>
+      <div class="roast">Bro, my dinner had its own guest list 🔥</div>
+      <ul>
+        <li>Malai Boti</li>
+        <li>Fries</li>
+        <li>Afghani Pulao</li>
+        <li>Gosht ka Salan</li>
+        <li>Murghi ka Salan</li>
+        <li>Shashlick</li>
+        <li>Seekh Kabab</li>
+        <li>Chicken Broast</li>
+        <li>Macaroni</li>
+        <li>Falooda</li>
+        <li>Ice Cream</li>
+        <li>Cake</li>
+        <li>Russian Salad</li>
+        <li>Palak Gosht</li>
+        <li>Kerala Qeema</li>
+      </ul>
+    </div>
+
+    <!-- 🎵 Background Music -->
+    <audio
+      id="bg-music"
+      src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    ></audio>
+
+    <!-- 🎉 Confetti Canvas -->
+    <canvas id="confetti"></canvas>
+
+    <script>
+      function revealFeast() {
+        document.getElementById("feast").style.display = "block";
+        document.getElementById("bg-music").play();
+        startConfetti();
+      }
+
+      // 🎉 Basic confetti particles
+      const canvas = document.getElementById("confetti");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let confetti = [];
+
+      function Confetto() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - canvas.height;
+        this.size = Math.random() * 8 + 4;
+        this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        this.speed = Math.random() * 3 + 2;
+      }
+
+      function startConfetti() {
+        confetti = Array.from({ length: 150 }, () => new Confetto());
+        requestAnimationFrame(drawConfetti);
+      }
+
+      function drawConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confetti.forEach((c, i) => {
+          c.y += c.speed;
+          if (c.y > canvas.height) {
+            c.y = -10;
+            c.x = Math.random() * canvas.width;
+          }
+          ctx.fillStyle = c.color;
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        requestAnimationFrame(drawConfetti);
+      }
+    </script>
+  </body>
+</html>
